@@ -6,27 +6,6 @@ import 'tachyons';
 
 const YEAR = new Date().getFullYear();
 
-const Footer = () => (
-    <footer>
-        <p>
-            Copyright &copy; {YEAR} Max Shaughnessy. All rights reserved.
-        </p>
-
-        <style jsx>{`
-            footer {
-                position: absolute;
-                bottom: 0;
-                width: 100vw;
-                font-size: smaller;
-                text-align: center;
-                color: hsl(0, 0%, 20%);
-                padding: 0.5em;
-            }
-        `}</style>
-    </footer>
-);
-
-
 const App = ({ Component, pageProps }: AppProps) => (
     <>
         <Head>
@@ -40,8 +19,6 @@ const App = ({ Component, pageProps }: AppProps) => (
                 <Component {...pageProps} />
             </main>
         </div>
-
-        <Footer />
 
         <style jsx global>{`
             html,
