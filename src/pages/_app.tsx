@@ -4,12 +4,11 @@ import Head from 'next/head';
 
 import 'tachyons';
 
-const YEAR = new Date().getFullYear();
-
 const App = ({ Component, pageProps }: AppProps) => (
     <>
         <Head>
             <meta charSet="utf-8" />
+            <title>Epoch</title>
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
             <link rel="icon" type="img/x-icon" href="/favicon.ico" />
         </Head>
@@ -39,7 +38,7 @@ const App = ({ Component, pageProps }: AppProps) => (
                 max-width: 42em;
             }
             main {
-                margin: 0em 2em;
+                margin: 0 2em;
             }
         `}</style>
     </>

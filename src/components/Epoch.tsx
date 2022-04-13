@@ -37,23 +37,23 @@ const DISCORD_STYLES: { [format: string]: { description: string; format(epoch: d
     },
     d: {
         description: "Short Date",
-        format: (epoch: dayjs.Dayjs, tz?: string) => { return new Intl.DateTimeFormat(tz ? Object.assign({}, ...Object.values(TIMEZONES))[tz.substring(tz.indexOf('/')+1)] : [], { timeZone: tz, year: '2-digit', month: '2-digit', day: '2-digit' }).format(epoch.toDate()) },
+        format: (epoch: dayjs.Dayjs, tz?: string) => { return new Intl.DateTimeFormat(tz ? Object.assign({}, ...Object.values(TIMEZONES))[tz.substring(tz.indexOf('/')+1)] : [], { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit' }).format(epoch.toDate()) },
     },
     D: {
         description: "Long Date",
-        format: (epoch: dayjs.Dayjs, tz?: string) => { return new Intl.DateTimeFormat(tz ? Object.assign({}, ...Object.values(TIMEZONES))[tz.substring(tz.indexOf('/')+1)] : [], { timeZone: tz, year: '2-digit', month: 'long', day: '2-digit' }).format(epoch.toDate()) },
+        format: (epoch: dayjs.Dayjs, tz?: string) => { return new Intl.DateTimeFormat(tz ? Object.assign({}, ...Object.values(TIMEZONES))[tz.substring(tz.indexOf('/')+1)] : [], { timeZone: tz, year: 'numeric', month: 'long', day: '2-digit' }).format(epoch.toDate()) },
     },
     f: {
         description: "Short Date/Time",
-        format: (epoch: dayjs.Dayjs, tz?: string) => { return new Intl.DateTimeFormat(tz ? Object.assign({}, ...Object.values(TIMEZONES))[tz.substring(tz.indexOf('/')+1)] : [], { timeZone: tz, year: '2-digit', month: 'long', day: '2-digit', hour: '2-digit', minute: '2-digit' }).format(epoch.toDate()) },
+        format: (epoch: dayjs.Dayjs, tz?: string) => { return new Intl.DateTimeFormat(tz ? Object.assign({}, ...Object.values(TIMEZONES))[tz.substring(tz.indexOf('/')+1)] : [], { timeZone: tz, year: 'numeric', month: 'long', day: '2-digit', hour: '2-digit', minute: '2-digit' }).format(epoch.toDate()) },
     },
     F: {
         description: "Long Date/Time",
-        format: (epoch: dayjs.Dayjs, tz?: string) => { return new Intl.DateTimeFormat(tz ? Object.assign({}, ...Object.values(TIMEZONES))[tz.substring(tz.indexOf('/')+1)] : [], { timeZone: tz, weekday: 'long', year: '2-digit', month: 'long', day: '2-digit', hour: '2-digit', minute: '2-digit' }).format(epoch.toDate()) },
+        format: (epoch: dayjs.Dayjs, tz?: string) => { return new Intl.DateTimeFormat(tz ? Object.assign({}, ...Object.values(TIMEZONES))[tz.substring(tz.indexOf('/')+1)] : [], { timeZone: tz, weekday: 'long', year: 'numeric', month: 'long', day: '2-digit', hour: '2-digit', minute: '2-digit' }).format(epoch.toDate()) },
     },
     R: {
         description: "Relative Time",
-        format: (epoch: dayjs.Dayjs, tz?: string) => { return epoch.fromNow(); },
+        format: (epoch: dayjs.Dayjs) => { return epoch.fromNow(); },
     }
 };
 
@@ -93,7 +93,7 @@ export default class Epoch extends React.Component<EpochProps, EpochState> {
     }
 
     renderedDiscordOutput(local: boolean): string {
-        return local ? DISCORD_STYLES[this.state.discordStyle].format(this.state.epoch) : DISCORD_STYLES[this.state.discordStyle].format(this.state.epoch, this.state.timezone);
+        return local ? DISCORD_STYLES[this.state.discordStyle].format(this.state.epoch) : DISCORD_STYLES[this.state.discordStyle].format(this.state.epoch);
     }
 
     componentDidUpdate(prevProps: EpochProps, prevState: EpochState) {
@@ -114,7 +114,7 @@ export default class Epoch extends React.Component<EpochProps, EpochState> {
                                 <optgroup key={x[0]} label={x[0]}>
                                     {
                                         Object.entries(x[1]).map(y => (
-                                            <option key={`${x[0]}/${y[0]}`} value={`${x[0]}/${y[0]}`}>{y[0].replace(/\_/, " ")}</option>
+                                            <option key={`${x[0]}/${y[0]}`} value={`${x[0]}/${y[0]}`}>{y[0].replace(/_/, " ")}</option>
                                         ))
                                     }
                                 </optgroup>
@@ -129,13 +129,13 @@ export default class Epoch extends React.Component<EpochProps, EpochState> {
                 <div className="db w-100 mb4">
                     <label htmlFor="epoch" className="f6 b db mb2">Epoch</label>
                     <input type="number" id="epoch" name="epoch" readOnly={true} value={this.state.epoch.utc().unix()} className="input-reset ba b--black-20 pa2 mb2 di w-80" />
-                    <button type="button" onClick={(e) => navigator.clipboard.writeText(`${this.state.epoch.utc().unix()}`)} className="di w-20">Copy</button>
+                    <button type="button" onClick={() => navigator.clipboard.writeText(`${this.state.epoch.utc().unix()}`)} className="di w-20">Copy</button>
                 </div>
 
                 <hr />
                 <div className="db w-100 mt4 mb4">
                     <label htmlFor="discord-style" className="f6 b db mb2">Discord Style</label>
-                    <select id="discord-style" name="discord-style" defaultValue="f" onChange={(e) => this.changeDiscordStyle(e)} className="input-reset ba b--black-20 pa2 mb2 db w-100">
+                    <select id="discord-style" name="discord-style" defaultValue="f" onChange={(e) => this.changeDiscordStyle(e)} className="ba b--black-20 pa2 mb2 db w-100">
                         {
                             Object.entries(DISCORD_STYLES).map(x => (
                                 <option key={x[0]} value={x[0]}>{x[1].description}</option>
@@ -146,14 +146,14 @@ export default class Epoch extends React.Component<EpochProps, EpochState> {
                 <div className="db w-100 mb4">
                     <label htmlFor="discord" className="f6 b db mb2">Discord</label>
                     <input type="text" id="discord" name="discord" readOnly={true} value={`<t:${this.state.epoch.utc().unix()}:${this.state.discordStyle}>`} className="input-reset ba b--black-20 pa2 mb2 di w-80" />
-                    <button type="button" onClick={(e) => navigator.clipboard.writeText(`<t:${this.state.epoch.utc().unix()}:${this.state.discordStyle}>`)} className="di w-20">Copy</button>
+                    <button type="button" onClick={() => navigator.clipboard.writeText(`<t:${this.state.epoch.utc().unix()}:${this.state.discordStyle}>`)} className="di w-20">Copy</button>
                 </div>
                 <div className="db w-100 mb4">
-                    <label htmlFor="discord-rendered" className="f6 b db mb2">Rendered Output (Target Locale)</label>
+                    <label htmlFor="discord-rendered" className="f6 b db mb2">Rendered Output ({this.state.timezone})</label>
                     <input type="text" id="discord-rendered" name="discord-rendered" readOnly={true} value={this.renderedDiscordOutput(false)} className="input-reset ba b--black-20 pa2 mb2 db w-100" />
                 </div>
                 <div className="db w-100 mb4">
-                    <label htmlFor="discord-rendered-local" className="f6 b db mb2">Rendered Output (Your Locale)</label>
+                    <label htmlFor="discord-rendered-local" className="f6 b db mb2">Rendered Output ({Intl.DateTimeFormat().resolvedOptions().timeZone})</label>
                     <input type="text" id="discord-rendered-local" name="discord-rendered-local" readOnly={true} value={this.renderedDiscordOutput(true)} className="input-reset ba b--black-20 pa2 mb2 db w-100" />
                 </div>
             </form>
