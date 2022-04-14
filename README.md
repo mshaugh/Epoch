@@ -1,3 +1,3 @@
-# epoch.mshaugh.io
+# Epoch
 
 > Convert a datetime for a given timezone to epoch time.
