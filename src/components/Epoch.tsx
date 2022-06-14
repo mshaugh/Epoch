@@ -154,8 +154,8 @@ export default class Epoch extends React.Component<EpochProps, EpochState> {
                 </div>
                 { this.state.timezone !== Intl.DateTimeFormat().resolvedOptions().timeZone && (
                 <div className="db w-100 mb4">
-                    <label htmlFor="discord-rendered-local" className="f6 b db mb2">Rendered Output ({Intl.DateTimeFormat().resolvedOptions().timeZone})</label>
-                    <input type="text" id="discord-rendered-local" name="discord-rendered-local" readOnly={true} value={this.renderedDiscordOutput(true)} className="input-reset ba b--black-20 pa2 mb2 db w-100" />
+                    <label htmlFor="discord-rendered-local" className="f6 b db mb2" suppressHydrationWarning={true}>Rendered Output ({Intl.DateTimeFormat().resolvedOptions().timeZone})</label>
+                    <input type="text" id="discord-rendered-local" name="discord-rendered-local" readOnly={true} value={this.renderedDiscordOutput(true)} className="input-reset ba b--black-20 pa2 mb2 db w-100" suppressHydrationWarning={true} />
                 </div>)
                 }
             </form>
