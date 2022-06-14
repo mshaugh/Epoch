@@ -93,7 +93,7 @@ export default class Epoch extends React.Component<EpochProps, EpochState> {
     }
 
     renderedDiscordOutput(local: boolean): string {
-        return local ? DISCORD_STYLES[this.state.discordStyle].format(this.state.epoch) : DISCORD_STYLES[this.state.discordStyle].format(this.state.epoch);
+        return local ? DISCORD_STYLES[this.state.discordStyle].format(this.state.epoch) : DISCORD_STYLES[this.state.discordStyle].format(this.state.epoch, this.state.timezone);
     }
 
     componentDidUpdate(prevProps: EpochProps, prevState: EpochState) {
